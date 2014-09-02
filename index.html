@@ -17,7 +17,10 @@
 		<section class="lane" rv-each-project="matrix">
 			<div>{ project.title }</div>
 			<ul class="tasks" rv-each-tasks="project.tasks">
-				<li rv-class="task.category" rv-each-task="tasks">{ task.title }</li>
+				<li rv-class="task.category" rv-each-task="tasks">
+					{ task.title }
+					<span class="button delete" rv-on-click="onRemove">✘</span>
+				</li>
 			</ul>
 		</section>
 	</div>

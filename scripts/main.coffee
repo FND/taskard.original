@@ -8,6 +8,12 @@ stores = {}
 board =
 	"task-states": ["to do", "in progress", "under review", "done"]
 	matrix: []
+	onRemove: (ev, rv) ->
+		store = stores[rv.project.title] # XXX: might not be populated yet
+		store.delete(rv.task.title). # TODO: error handling
+			then(=> # XXX: should use Rivets for UI updates
+				node = this.parentNode
+				node.parentNode.removeChild(node))
 
 node = document.querySelector(".board")
 rivets.bind(node, board)
@@ -68,6 +74,6 @@ loadProjects = ([projects, _]) ->
 		store.items().then(register)
 	return Promise.all(items).then(-> index)
 
-store = new Store(storePath()) # projects
-store.index().then(loadProjects).then(populate).
+projects = new Store(storePath()) # projects
+projects.index().then(loadProjects).then(populate).
 	catch((err) -> console.log("ERROR", err, err.stack)) # TODO: error handling

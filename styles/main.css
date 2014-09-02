@@ -23,6 +23,10 @@ label span { /* XXX: hacky */
 	width: 5em;
 }
 
+.button {
+	cursor: pointer;
+}
+
 .board {
 	display: table;
 	width: 100%;
@@ -57,6 +61,7 @@ label span { /* XXX: hacky */
 }
 
 .tasks > li {
+	position: relative;
 	height: 2em; /* XXX: does not allow for multi-line contents */
 	line-height: 2em;
 	margin: 0 1em 1em 0;
@@ -66,6 +71,12 @@ label span { /* XXX: hacky */
 	padding: 0.2em 0.5em;
 	background-color: #FFF;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.tasks .delete {
+	position: absolute;
+	top: 0;
+	right: 0.5em;
 }
 
 .tasks > .urgent {

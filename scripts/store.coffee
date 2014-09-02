@@ -29,6 +29,12 @@ module.exports = class Store
 			data: serializer.serialize(item)
 		})
 
+	delete: (title) ->
+		return util.ajax({
+			type: "DELETE",
+			url: @uri(title)
+		})
+
 	get: (title) ->
 		return util.ajax({
 			type: "GET"
