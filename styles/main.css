@@ -11,9 +11,15 @@
 .columns > *,
 .lane > * {
 	display: table-cell;
+	border-bottom: 0.5em solid transparent; /* XXX: hacky */
 }
 
 .columns,
-.lane :first-child {
+.lane > :first-child {
 	font-weight: bold;
+}
+
+.lane ul {
+	margin: 0;
+	padding: 0;
 }

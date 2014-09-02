@@ -3,7 +3,7 @@ Store = require("./store")
 
 data =
 	"task-states": ["to do", "in progress", "under review", "done"]
-	projects: ["foo", "bar"]
+	projects: []
 
 node = document.querySelector(".board")
 rivets.bind(node, data)
@@ -13,6 +13,13 @@ storePath = (directory) ->
 	parts = [base, "store"] # XXX: hard-coded root directory
 	parts.push(directory) if directory
 	return parts.join("/")
+
+populate = (projects) ->
+	for project, tasks of projects
+		project =
+			title: project
+			tasks: (task for title, task of tasks)
+		data.projects.push(project) # XXX: inefficient WRT Rivets re-rendering?
 
 loadProjects = ([projects, _]) ->
 	index = {}
@@ -24,5 +31,5 @@ loadProjects = ([projects, _]) ->
 	return Promise.all(items).then(-> index)
 
 store = new Store(storePath()) # projects
-store.index().then(loadProjects).then((projects) -> console.dir(projects)).
+store.index().then(loadProjects).then(populate).
 	catch((err) -> console.log("ERROR", err, err.stack)) # TODO: error handling

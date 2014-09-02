@@ -17,8 +17,10 @@
 		</header>
 
 		<section class="lane" rv-each-project="projects">
-			<div>{ project }</div>
-			<div rv-each-state="task-states">&hellip;</div>
+			<div>{ project.title }</div>
+			<ul rv-each-state="task-states">
+				<li rv-each-task="project.tasks">{ task.title }</li>
+			</ul>
 		</section>
 	</div>
 
