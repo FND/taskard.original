@@ -50,3 +50,15 @@ body {
 	background-color: #FFF;
 	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
+
+.tasks > .urgent {
+	border-color: #C33;
+}
+
+.tasks > .important {
+	border-color: #E0AB18;
+}
+
+.tasks > .casual {
+	border-color: #35B15A;
+}

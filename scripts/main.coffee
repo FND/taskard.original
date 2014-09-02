@@ -19,6 +19,7 @@ populate = (projects) ->
 		# index tasks by state
 		index = {}
 		for title, task of tasks
+			task.category ?= "" # XXX: hacky -- XXX: belongs into serializer!?
 			index[task.state] ?= []
 			index[task.state].push(task)
 
