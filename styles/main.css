@@ -4,7 +4,7 @@ html {
 
 body {
 	width: 90%;
-	margin: 0 auto;
+	margin: 1em auto;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -42,6 +42,8 @@ body {
 }
 
 .tasks > li {
+	height: 2em; /* XXX: does not allow for multi-line contents */
+	line-height: 2em;
 	margin: 0 1em 1em 0;
 	border-width: 0;
 	border-top: 5px solid #9B9A9D;
