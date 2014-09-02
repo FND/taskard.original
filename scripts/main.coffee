@@ -14,6 +14,15 @@ storePath = (directory) ->
 	parts.push(directory) if directory
 	return parts.join("/")
 
-store = new Store(storePath())
-store.index().then((index) -> console.log(index)).
+loadProjects = ([projects, _]) ->
+	index = {}
+	items = for project in projects
+		register = do (project) ->
+			return (items) -> index[project] = items
+		store = new Store(storePath(project))
+		store.items().then(register)
+	return Promise.all(items).then(-> index)
+
+store = new Store(storePath()) # projects
+store.index().then(loadProjects).then((projects) -> console.dir(projects)).
 	catch((err) -> console.log("ERROR", err, err.stack)) # TODO: error handling
