@@ -1,0 +1,9 @@
+{
+  "name": "taskard",
+  "version": "0.0.0",
+  "authors": ["FND"],
+  "license": "MIT",
+  "dependencies": {
+    "rivets": "~0.6.10"
+  }
+}

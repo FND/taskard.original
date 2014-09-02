@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Taskard</title>
+	<link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+	<h1>Taskard</h1>
+
+	<div class="board">
+		<header class="columns">
+			<div></div>
+			<div rv-each-state="task-states">{ state }</div>
+		</header>
+
+		<section class="lane" rv-each-project="projects">
+			<div>{ project }</div>
+			<div rv-each-state="task-states">&hellip;</div>
+		</section>
+	</div>
+
+	<script src="dist/bundle.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+.board {
+	display: table;
+	width: 100%;
+}
+
+.columns,
+.lane {
+	display: table-row;
+}
+
+.columns > *,
+.lane > * {
+	display: table-cell;
+}
+
+.columns,
+.lane :first-child {
+	font-weight: bold;
+}
