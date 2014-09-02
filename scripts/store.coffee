@@ -18,6 +18,17 @@ module.exports = class Store
 			headers: { Depth: 1 }
 		}).then((doc) => extractEntries(doc))
 
+	add: (item) -> # XXX: clobbers, subject to race conditions (conflicts), doesn't update indexes
+		title = item.title
+		throw new Error("missing title") unless title
+
+		return util.ajax({
+			type: "PUT",
+			url: @uri(title),
+			headers: { "Content-Type": "text/plain" }, # XXX: should not be necessary!?
+			data: serializer.serialize(item)
+		})
+
 	get: (title) ->
 		return util.ajax({
 			type: "GET"

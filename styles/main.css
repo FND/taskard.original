@@ -8,6 +8,21 @@ body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+label,
+.radios {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.radios label {
+	display: inline;
+}
+
+label span { /* XXX: hacky */
+	display: inline-block;
+	width: 5em;
+}
+
 .board {
 	display: table;
 	width: 100%;

@@ -1,12 +1,38 @@
 rivets = require("rivets")
 Store = require("./store")
 
-data =
+# XXX: too many globals => move into Board class?
+
+stores = {}
+
+board =
 	"task-states": ["to do", "in progress", "under review", "done"]
 	matrix: []
 
 node = document.querySelector(".board")
-rivets.bind(node, data)
+rivets.bind(node, board)
+
+form =
+	projects: []
+	categories: ["", "urgent", "important", "casual"]
+	onSubmit: (ev, rv) ->
+		ev.preventDefault()
+		task =
+			title: rv.task
+			category: rv.selectedCategory
+			state: board["task-states"][0] # XXX: hard-coded
+
+		projects = this.parentNode.getElementsByClassName("radios")[0]. # XXX: should use Rivets for this
+			getElementsByTagName("input")
+		for radio in projects
+			selectedProject = radio.value if radio.checked
+		return unless selectedProject # TODO: user notification
+
+		store = stores[selectedProject] # XXX: might not be populated yet
+		store.add(task) # TODO: error handling -- TODO: UI updates
+
+node = document.querySelector("form.task")
+rivets.bind(node, form)
 
 base = document.location.toString().split("/")[...-1].join("/")
 storePath = (directory) ->
@@ -23,10 +49,14 @@ populate = (projects) ->
 			index[task.state] ?= []
 			index[task.state].push(task)
 
-		data.matrix.push({ # XXX: inefficient WRT Rivets re-rendering?
+		# XXX: `push`ing inefficient WRT Rivets re-rendering?
+
+		board.matrix.push({
 			title: project
-			tasks: (index[state] for state in data["task-states"])
+			tasks: (index[state] for state in board["task-states"])
 		})
+
+		form.projects.push(project)
 
 loadProjects = ([projects, _]) ->
 	index = {}
@@ -34,6 +64,7 @@ loadProjects = ([projects, _]) ->
 		register = do (project) ->
 			return (items) -> index[project] = items
 		store = new Store(storePath(project))
+		stores[project] = store
 		store.items().then(register)
 	return Promise.all(items).then(-> index)
 

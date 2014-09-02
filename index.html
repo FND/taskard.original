@@ -22,6 +22,26 @@
 		</section>
 	</div>
 
+	<form class="task">
+		<div class="radios">
+			<label rv-each-project="projects">
+				<input type="radio" name="project" rv-value="project">
+				{ project }
+			</label>
+		</div>
+		<label>
+			<span>description</span>
+			<input type="text" rv-value="task">
+		</label>
+		<label>
+			<span>category</span>
+			<select rv-value="selectedCategory">
+				<option rv-each-category="categories">{ category }</option>
+			</select>
+		</label>
+		<input type="submit" rv-on-click="onSubmit">
+	</form>
+
 	<script src="dist/bundle.js"></script>
 </body>
 
