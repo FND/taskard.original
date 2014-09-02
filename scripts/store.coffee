@@ -6,8 +6,8 @@ module.exports = class Store
 	constructor: (@root, @type) ->
 
 	items: ->
-		return @index().then((entries) =>
-			items = (@get(entry.name) for entry in entries when !entry.dir)
+		return @index().then(([dirs, files]) =>
+			items = (@get(file) for file in files)
 			return Promise.all(items).
 				then((items) -> util.indexBy("title", items)))
 
@@ -30,10 +30,15 @@ module.exports = class Store
 
 # extract file names from a WebDAV XML response
 extractEntries = (doc) ->
-	entries = for entry, i in doc.getElementsByTagNameNS("DAV:", "response")
-		parseEntry(entry) if i isnt 0 # skip root -- XXX: brittle
-	entries.shift() # skip root -- XXX: duplicates above
-	return entries
+	dirs = []
+	files = []
+	for entry, i in doc.getElementsByTagNameNS("DAV:", "response")
+		entry = parseEntry(entry)
+		continue if i is 0 # skip root -- XXX: brittle?
+		list = if entry.dir then dirs else files # TODO: use `reduce` instead?
+		list.push(entry.name)
+
+	return [dirs, files]
 
 parseEntry = (entry) ->
 	uri = entry.getElementsByTagNameNS("DAV:", "href")[0].textContent
