@@ -1,3 +1,13 @@
+html {
+	background-color: #EFEDF2;
+}
+
+body {
+	width: 90%;
+	margin: 0 auto;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .board {
 	display: table;
 	width: 100%;
@@ -14,12 +24,29 @@
 	border-bottom: 0.5em solid transparent; /* XXX: hacky */
 }
 
-.columns,
+.columns > *,
 .lane > :first-child {
+	font-size: 1.5em;
 	font-weight: bold;
+	text-transform: uppercase;
+	color: #9B9A9D;
 }
 
 .lane ul {
 	margin: 0;
 	padding: 0;
+}
+
+.tasks {
+	list-style-type: none;
+}
+
+.tasks > li {
+	margin: 0 1em 1em 0;
+	border-width: 0;
+	border-top: 5px solid #9B9A9D;
+	border-radius: 4px;
+	padding: 0.2em 0.5em;
+	background-color: #FFF;
+	box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
 }
