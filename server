@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var jsDAV = require("jsDAV/lib/jsdav");
+var locks = require("jsDAV/lib/DAV/plugins/locks/fs");
+var path = require("path");
+
+var root = __dirname
+
+jsDAV.debugMode = true;
+jsDAV.createServer({ node: root }, 8000);

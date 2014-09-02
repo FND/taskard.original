@@ -1,6 +1,7 @@
 {
   "browser": {
-    "rivets": "./bower_components/rivets/dist/rivets.js"
+    "rivets": "./bower_components/rivets/dist/rivets.js",
+    "jquery": "./bower_components/jquery/dist/jquery.js"
   },
   "browserify": {
     "transform": ["coffeeify"]
@@ -9,6 +10,7 @@
     "browserify": "^5.10.1",
     "coffee-script": "^1.7.1",
     "coffeeify": "^0.7.0",
+    "jsDAV": "^0.3.2",
     "watchify": "^1.0.2"
   }
 }

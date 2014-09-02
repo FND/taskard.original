@@ -1,9 +1,12 @@
 {
   "name": "taskard",
   "version": "0.0.0",
-  "authors": ["FND"],
+  "authors": [
+    "FND"
+  ],
   "license": "MIT",
   "dependencies": {
-    "rivets": "~0.6.10"
+    "rivets": "~0.6.10",
+    "jquery": "~2.1.1"
   }
 }
