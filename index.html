@@ -16,10 +16,10 @@
 			<div rv-each-state="task-states">{ state }</div>
 		</header>
 
-		<section class="lane" rv-each-project="projects">
+		<section class="lane" rv-each-project="matrix">
 			<div>{ project.title }</div>
-			<ul class="tasks" rv-each-state="task-states">
-				<li rv-each-task="project.tasks">{ task.title }</li>
+			<ul class="tasks" rv-each-tasks="project.tasks">
+				<li rv-each-task="tasks">{ task.title }</li>
 			</ul>
 		</section>
 	</div>

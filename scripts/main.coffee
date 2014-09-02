@@ -3,7 +3,7 @@ Store = require("./store")
 
 data =
 	"task-states": ["to do", "in progress", "under review", "done"]
-	projects: []
+	matrix: []
 
 node = document.querySelector(".board")
 rivets.bind(node, data)
@@ -16,10 +16,16 @@ storePath = (directory) ->
 
 populate = (projects) ->
 	for project, tasks of projects
-		project =
+		# index tasks by state
+		index = {}
+		for title, task of tasks
+			index[task.state] ?= []
+			index[task.state].push(task)
+
+		data.matrix.push({ # XXX: inefficient WRT Rivets re-rendering?
 			title: project
-			tasks: (task for title, task of tasks)
-		data.projects.push(project) # XXX: inefficient WRT Rivets re-rendering?
+			tasks: (index[state] for state in data["task-states"])
+		})
 
 loadProjects = ([projects, _]) ->
 	index = {}
