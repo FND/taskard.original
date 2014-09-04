@@ -69,7 +69,10 @@ populate = (projects) ->
 		sortable = new Sortable(list,
 				group: ".tasks",
 				draggable: "li", # XXX: bad selector
-				ghostClass: "placeholder")
+				ghostClass: "placeholder"
+				onRemove: onRemove
+				onAdd: onAdd)
+				# TODO: `onUpdate` for internal ordering
 
 loadProjects = ([projects, _]) ->
 	index = {}
@@ -84,3 +87,32 @@ loadProjects = ([projects, _]) ->
 projects = new Store(storePath()) # projects
 projects.index().then(loadProjects).then(populate).
 	catch((err) -> console.log("ERROR", err, err.stack)) # TODO: error handling
+
+onRemove = (ev) ->
+	task = determineTask(ev.item, ev.target, false)
+	stores[task.project].delete(task.title)
+
+onAdd = (ev) ->
+	task = determineTask(ev.item)
+	item = # XXX: breaks encapsulation
+		title: task.title
+		state: task.state
+		category: ev.item.className # XXX: brittle
+	stores[task.project].add(item)
+
+determineTask = (node, list, includeState = true) ->
+	list ?= node.parentNode # XXX: breaks encapsulation
+	task =
+		title: node.getAttribute("data-task")
+		project: list.getAttribute("data-project")
+
+	return task unless includeState
+
+	sibling = list
+	index = 0
+	while(sibling)
+		sibling = sibling.previousSibling
+		index++ if sibling?.classList?.contains("tasks")
+	task.state = board["task-states"][index] # XXX: breaks encapsulation
+
+	return task
