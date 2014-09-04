@@ -1,4 +1,5 @@
 rivets = require("rivets")
+Sortable = require("sortable")
 Store = require("./store")
 
 # XXX: too many globals => move into Board class?
@@ -63,6 +64,12 @@ populate = (projects) ->
 		})
 
 		form.projects.push(project)
+
+	for list in document.querySelectorAll(".tasks") # TODO: hacky and inefficient; use event delegation!?
+		sortable = new Sortable(list,
+				group: ".tasks",
+				draggable: "li", # XXX: bad selector
+				ghostClass: "placeholder")
 
 loadProjects = ([projects, _]) ->
 	index = {}
