@@ -21,6 +21,7 @@
 				<li rv-class="task.category" rv-data-task="task.title"
 						rv-each-task="tasks">
 					{ task.title }
+					<!-- XXX: SPAN prevents a11y -->
 					<span class="button delete" rv-on-click="onRemove">✘</span>
 				</li>
 			</ul>

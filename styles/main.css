@@ -82,6 +82,16 @@ label span { /* XXX: hacky */
 	position: absolute;
 	top: 0;
 	right: 0.5em;
+	opacity: 0.5;
+	transition-property: transform, opacity;
+	transition-duration: 0.1s;
+	transition-timing-function: linear;
+}
+.tasks .delete:focus,
+.tasks .delete:hover,
+.tasks .delete:active {
+	transform: scale(1.2);
+	opacity: 1;
 }
 
 .tasks > .urgent {
