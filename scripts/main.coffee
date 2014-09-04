@@ -6,7 +6,7 @@ Store = require("./store")
 stores = {}
 
 board =
-	"task-states": ["to do", "in progress", "under review", "done"]
+	"task-states": ["to do", "in progress", "review pending", "done"]
 	matrix: []
 	onRemove: (ev, rv) ->
 		store = stores[rv.project.title] # XXX: might not be populated yet
