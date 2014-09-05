@@ -1,7 +1,5 @@
-# inspired by TiddlyWeb's text store, which uses an RFC 822-style format
+# inspired by TiddlyWeb's text serialization, which uses an RFC 822-style format
 # `tid`s are key-value pairs with two special slots: `title` and `body`
-
-util = require("./util")
 
 # XXX: somewhere extra "----" lines (i.e. such not functioning as separators)
 # are being swallowed
@@ -19,7 +17,7 @@ exports.serialize = (tid, type) ->
 
 	return headers.concat(["", body]).join("\n")
 
-exports.deserialize = (title, txt, type) ->
+exports.deserialize = (title, txt, type) -> # TODO: throw errors for invalid contents
 	[headers, body] = part(txt, "\n\n")
 	headers = headers.split("\n")
 	body = body.trim()

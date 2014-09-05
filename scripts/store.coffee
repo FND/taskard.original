@@ -1,7 +1,10 @@
+# a WebDAV-based file store, managing the contents of an individual directory
+# inspired by TiddlyWeb's text store
+# `item`s are key-value pairs identified by `title`
+
 serializer = require("./serializer")
 util = require("./util")
 
-# a WebDAV-based file store, managing the contents of an individual directory
 module.exports = class Store
 	constructor: (@root, @type) ->
 
