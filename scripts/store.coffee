@@ -38,6 +38,13 @@ module.exports = class Store
 			url: @uri(title)
 		})
 
+	move: (title, store) ->
+		return util.ajax({
+			type: "MOVE",
+			url: @uri(title),
+			headers: { "Destination": store.uri(title) }
+		})
+
 	get: (title) ->
 		return util.ajax({
 			type: "GET"

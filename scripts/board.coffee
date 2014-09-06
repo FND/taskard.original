@@ -32,6 +32,7 @@ module.exports = class Board
 			onRemove: @onDropRemove
 			onAdd: @onDropAdd
 			# TODO: `onUpdate` for internal ordering
+			onEnd: @onDropEnd
 		for list in @root.querySelectorAll(".tasks") # TODO: use event delegation!?
 			new Sortable(list, dragndrop)
 
@@ -43,18 +44,21 @@ module.exports = class Board
 				node.parentNode.removeChild(node))
 
 	onDropRemove: (ev) =>
-		task = @determineTask(ev.item, ev.target, false)
-		@registry[task.project].delete(task.title)
+		@dropRemove = @determineTask(ev.item, ev.target)
 
 	onDropAdd: (ev) =>
-		task = @determineTask(ev.item)
-		item = # XXX: breaks encapsulation
-			title: task.title
-			state: task.state
-			category: ev.item.className # XXX: brittle
-		@registry[task.project].add(item)
+		@dropAdd = @determineTask(ev.item)
 
-	determineTask: (node, list, includeState = true) =>
+	onDropEnd: (ev) =>
+		if @dropAdd and @dropRemove # moved between projects
+			source = @registry[@dropRemove.project]
+			target = @registry[@dropAdd.project]
+			source.move(@dropRemove.title, target)
+
+		delete @dropAdd
+		delete @dropRemove
+
+	determineTask: (node, list, includeState) =>
 		list ?= node.parentNode # XXX: breaks encapsulation
 		task =
 			title: node.getAttribute("data-task")
