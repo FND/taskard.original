@@ -1,44 +1,22 @@
 rivets = require("rivets")
 Board = require("./board")
+TaskForm = require("./task_form")
 Store = require("./store")
 
 registry = {} # project stores
 board = new Board(".board", ["to do", "in progress", "review pending", "done"],
 		registry)
+form = new TaskForm("form.task", board, registry)
 
-form =
-	projects: []
-	categories: ["", "urgent", "important", "casual"]
-	onSubmit: (ev, rv) ->
-		ev.preventDefault()
-		task =
-			title: rv.task
-			category: rv.selectedCategory
-			state: board["task-states"][0] # XXX: hard-coded
-
-		projects = this.parentNode.getElementsByClassName("radios")[0]. # XXX: should use Rivets for this
-			getElementsByTagName("input")
-		for radio in projects
-			selectedProject = radio.value if radio.checked
-		return unless selectedProject # TODO: user notification
-
-		store = registry[selectedProject] # XXX: might not be populated yet
-		store.add(task) # TODO: error handling -- TODO: UI updates
-
-node = document.querySelector("form.task")
-rivets.bind(node, form)
-
-base = document.location.toString().split("/")[...-1].join("/")
+basePath = document.location.toString().split("/")[...-1].join("/")
 storePath = (directory) ->
-	parts = [base, "store"] # XXX: hard-coded root directory
+	parts = [basePath, "store"] # XXX: hard-coded root directory
 	parts.push(directory) if directory
 	return parts.join("/")
 
 init = (projects) ->
 	board.init(projects)
-
-	for project, tasks of projects
-		form.projects.push(project)
+	form.init(projects)
 
 loadTasks = ([projects, _]) ->
 	index = {} #
