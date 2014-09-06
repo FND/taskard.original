@@ -1,23 +1,10 @@
 rivets = require("rivets")
-Sortable = require("sortable")
+Board = require("./board")
 Store = require("./store")
 
-# XXX: too many globals => move into Board class?
-
-stores = {}
-
-board =
-	"task-states": ["to do", "in progress", "review pending", "done"]
-	matrix: []
-	onRemove: (ev, rv) ->
-		store = stores[rv.project.title] # XXX: might not be populated yet
-		store.delete(rv.task.title). # TODO: error handling
-			then(=> # XXX: should use Rivets for UI updates
-				node = this.parentNode
-				node.parentNode.removeChild(node))
-
-node = document.querySelector(".board")
-rivets.bind(node, board)
+registry = {} # project stores
+board = new Board(".board", ["to do", "in progress", "review pending", "done"],
+		registry)
 
 form =
 	projects: []
@@ -35,7 +22,7 @@ form =
 			selectedProject = radio.value if radio.checked
 		return unless selectedProject # TODO: user notification
 
-		store = stores[selectedProject] # XXX: might not be populated yet
+		store = registry[selectedProject] # XXX: might not be populated yet
 		store.add(task) # TODO: error handling -- TODO: UI updates
 
 node = document.querySelector("form.task")
@@ -47,72 +34,22 @@ storePath = (directory) ->
 	parts.push(directory) if directory
 	return parts.join("/")
 
-populate = (projects) ->
+init = (projects) ->
+	board.init(projects)
+
 	for project, tasks of projects
-		# index tasks by state
-		index = {}
-		for title, task of tasks
-			task.category ?= "" # XXX: hacky -- XXX: belongs into serializer!?
-			index[task.state] ?= []
-			index[task.state].push(task)
-
-		# XXX: `push`ing inefficient WRT Rivets re-rendering?
-
-		board.matrix.push({
-			title: project
-			tasks: (index[state] for state in board["task-states"])
-		})
-
 		form.projects.push(project)
 
-	for list in document.querySelectorAll(".tasks") # TODO: hacky and inefficient; use event delegation!?
-		sortable = new Sortable(list,
-				group: ".tasks",
-				draggable: "li", # XXX: bad selector
-				ghostClass: "placeholder"
-				onRemove: onRemove
-				onAdd: onAdd)
-				# TODO: `onUpdate` for internal ordering
-
-loadProjects = ([projects, _]) ->
-	index = {}
+loadTasks = ([projects, _]) ->
+	index = {} #
 	items = for project in projects
 		register = do (project) ->
 			return (items) -> index[project] = items
 		store = new Store(storePath(project))
-		stores[project] = store
+		registry[project] = store
 		store.items().then(register)
 	return Promise.all(items).then(-> index)
 
 projects = new Store(storePath()) # projects
-projects.index().then(loadProjects).then(populate).
+projects.index().then(loadTasks).then(init).
 	catch((err) -> console.log("ERROR", err, err.stack)) # TODO: error handling
-
-onRemove = (ev) ->
-	task = determineTask(ev.item, ev.target, false)
-	stores[task.project].delete(task.title)
-
-onAdd = (ev) ->
-	task = determineTask(ev.item)
-	item = # XXX: breaks encapsulation
-		title: task.title
-		state: task.state
-		category: ev.item.className # XXX: brittle
-	stores[task.project].add(item)
-
-determineTask = (node, list, includeState = true) ->
-	list ?= node.parentNode # XXX: breaks encapsulation
-	task =
-		title: node.getAttribute("data-task")
-		project: list.getAttribute("data-project")
-
-	return task unless includeState
-
-	sibling = list
-	index = 0
-	while(sibling)
-		sibling = sibling.previousSibling
-		index++ if sibling?.classList?.contains("tasks")
-	task.state = board["task-states"][index] # XXX: breaks encapsulation
-
-	return task
