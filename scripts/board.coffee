@@ -18,7 +18,7 @@ module.exports = class Board
 		for project, tasks of tasksByProject
 			index = {} # tasks by state
 			for title, item of tasks
-				task = new Task(title, item.state, item.category)
+				task = new Task(title, item.state, item.category, item.body)
 				index[item.state] ?= []
 				index[item.state].push(task)
 
@@ -75,4 +75,4 @@ class Project
 	constructor: (@title, @tasks) ->
 
 class Task
-	constructor: (@title, @state, @category = "") ->
+	constructor: (@title, @state, @category = "", @body) ->

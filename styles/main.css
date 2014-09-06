@@ -66,8 +66,6 @@ label span { /* XXX: hacky */
 
 .tasks > li {
 	position: relative;
-	height: 2em; /* XXX: does not allow for multi-line contents */
-	line-height: 2em;
 	margin: 0 1em 1em 0;
 	border-width: 0;
 	border-top: 5px solid #9B9A9D;
@@ -78,9 +76,19 @@ label span { /* XXX: hacky */
 	cursor: pointer; /* draggable */
 }
 
+.tasks h3,
+.tasks p {
+	margin: 0.5em 0;
+}
+
+.tasks h3 {
+	font-size: 1em;
+	font-weight: normal;
+}
+
 .tasks .delete {
 	position: absolute;
-	top: 0;
+	top: 0.5em;
 	right: 0.5em;
 	opacity: 0.5;
 	transition-property: transform, opacity;
