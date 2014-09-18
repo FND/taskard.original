@@ -36,8 +36,8 @@ module.exports = class Board
 		for list in @root.querySelectorAll(".tasks") # TODO: use event delegation!?
 			new Sortable(list, dragndrop)
 
-	onTaskDelete: (ev, rv) =>
-		store = @registry[rv.project.title]
+	onTaskDelete: (ev, rv) ->
+		store = rv.registry[rv.project.title]
 		store.delete(rv.task.title). # TODO: error handling
 			then(=> # XXX: breaks encapsulation; should use Rivets for UI updates
 				node = this.parentNode
