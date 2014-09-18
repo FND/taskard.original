@@ -6,7 +6,7 @@ serializer = require("./serializer")
 util = require("./util")
 
 module.exports = class Store
-	constructor: (@root, @type) ->
+	constructor: (@root) ->
 
 	items: ->
 		return @index().then(([dirs, files]) =>
@@ -49,7 +49,7 @@ module.exports = class Store
 		return util.ajax({
 			type: "GET"
 			url: @uri(title)
-		}).then((txt) => serializer.deserialize(title, txt, @type))
+		}).then((txt) => serializer.deserialize(title, txt))
 
 	uri: (title) ->
 		title = encodeURIComponent(title)
