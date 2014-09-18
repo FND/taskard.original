@@ -22,9 +22,8 @@
 						rv-each-task="tasks">
 					<h3>{ task.title }</h3>
 					<p rv-if="task.body">{ task.body }</p>
-					<!-- XXX: SPAN prevents a11y (e.g. keyboard controls) -->
-					<span class="button delete"
-							rv-on-click="onTaskDelete">✘</span>
+					<a href="javascript:;" class="button delete"
+							rv-on-click="onTaskDelete">✘</a>
 				</li>
 			</ul>
 		</section>

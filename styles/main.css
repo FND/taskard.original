@@ -24,6 +24,8 @@ label span { /* XXX: hacky */
 }
 
 .button {
+	text-decoration: none;
+	color: #000;
 	cursor: pointer;
 }
 
