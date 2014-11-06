@@ -1,10 +1,20 @@
 $ = require("jquery") # TODO: replace jQuery
 
-# wrapper around `jQuery.ajax`, making the return value Promises/A+ compatible
-exports.ajax = (args...) ->
+# wrapper around `jQuery.ajax`, as required by DAV-Dump
+exports.http = (method, uri, headers, body) ->
+	options =
+		type: method
+		url: uri
+		headers: headers
+		data: body
 	return new Promise((resolve, reject) ->
-		$.ajax(args...).
-			done((data, status, xhr) -> resolve(data)). # XXX: discarding `xhr`
+		$.ajax(options).
+			done((data, status, xhr) ->
+				res =
+					status: xhr.status
+					body: data
+					#headers: # not strictly necessary
+				resolve(res)).
 			fail((xhr, status, err) -> reject(new Error(err))))
 
 exports.indexBy = (prop, items) ->

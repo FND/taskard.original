@@ -2,7 +2,6 @@
 
 rivets = require("rivets")
 Sortable = require("sortable")
-Store = require("./store")
 
 module.exports = class Board
 	# `selector` identifies the respective container element

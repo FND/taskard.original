@@ -8,6 +8,7 @@
   "dependencies": {
     "rivets": "~0.6.10",
     "jquery": "~2.1.1",
-    "Sortable": "~0.5.0"
+    "Sortable": "~0.5.0",
+    "dav-dump": "https://github.com/FND/dav-dump.git"
   }
 }

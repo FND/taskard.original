@@ -2,7 +2,8 @@
   "browser": {
     "rivets": "./bower_components/rivets/dist/rivets.js",
     "sortable": "./bower_components/Sortable/Sortable.js",
-    "jquery": "./bower_components/jquery/dist/jquery.js"
+    "jquery": "./bower_components/jquery/dist/jquery.js",
+    "dav-dump": "./bower_components/dav-dump/src/store.coffee"
   },
   "browserify": {
     "transform": ["coffeeify"]

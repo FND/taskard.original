@@ -1,7 +1,8 @@
 rivets = require("rivets")
+Store = require("dav-dump")
 Board = require("./board")
 TaskForm = require("./task_form")
-Store = require("./store")
+util = require("./util")
 
 registry = {} # project stores
 board = new Board(".board", ["to do", "in progress", "review pending", "done"],
@@ -23,11 +24,11 @@ loadTasks = ([projects, _]) ->
 	items = for project in projects
 		register = do (project) ->
 			return (items) -> index[project] = items
-		store = new Store(storePath(project))
+		store = new Store(storePath(project), util.http)
 		registry[project] = store
-		store.items().then(register)
+		store.all().then(register)
 	return Promise.all(items).then(-> index)
 
-projects = new Store(storePath()) # projects
+projects = new Store(storePath(), util.http) # projects
 projects.index().then(loadTasks).then(init).
 	catch((err) -> console.log("ERROR", err, err.stack)) # TODO: error handling
