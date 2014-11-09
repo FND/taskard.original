@@ -5,7 +5,7 @@ Store = require("dav-dump")
 http = require("./util").http
 
 module.exports = class Repository
-	constructor: (@root) ->
+	constructor: (@root, @taskStates) ->
 		@store = new Store(@root, http)
 
 	# `callback` is invoked once per project, passing the project name and tasks
