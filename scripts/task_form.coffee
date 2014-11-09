@@ -1,4 +1,5 @@
 # UI for creating/modifying individual tasks
+# XXX: currently unused
 
 rivets = require("rivets")
 
