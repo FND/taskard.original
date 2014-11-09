@@ -12,11 +12,15 @@ form = new TaskForm("form.task", board, registry)
 
 initUI = (projectStores) -> # TODO: make UI widgets use `Store`s directly
 	tasks = Object.keys(projectStores).
-		map((project) -> projectStores[project].all()) # XXX: discards project ID
+		map((project) -> projectStores[project].all().
+				then((tasks) -> Promise.resolve([project, tasks])))
 	Promise.all(tasks).
-		then((tasks) ->
-			board.init(tasks)
-			form.init(tasks)
+		then((tasksByProject) ->
+			index = {}
+			for [project, tasks] in tasksByProject
+				index[project] = tasks
+			board.init(index)
+			form.init(index)
 			return)
 
 basePath = document.location.toString().split("/")[...-1].join("/")
