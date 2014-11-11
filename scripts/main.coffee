@@ -7,13 +7,10 @@ util = require("./util")
 
 repo = new Repository([basePath, "store"].join("/"), # XXX: hard-coded directory
 		["to do", "in progress", "review pending", "done"]) # XXX: hard-coded
-registry = {} # project stores -- TODO: obsolete due to `repo`
-board = new Board(".board", repo.taskStates, registry)
+board = new Board(".board", repo.taskStates)
 
-onProjectLoad = (project, tasks) ->
-	index = {}
-	index[project] = tasks
-	board.init(index) # TODO: s/init/add/
+onProjectLoad = (projectName, tasks, store) -> # XXX: `tasks` is kind of redundant
+	board.add(projectName, tasks, store)
 
 basePath = document.location.toString().split("/")[...-1].join("/")
 repo.load(onProjectLoad).

@@ -6,24 +6,25 @@ Sortable = require("sortable")
 module.exports = class Board
 	# `selector` identifies the respective container element
 	# `states` is an array of task states (strings) -- TODO: derive from tasks (=> order?)
-	# `registry` is an index of project stores
-	constructor: (selector, @states, @registry) ->
+	constructor: (selector, @states) ->
 		@matrix = []
+		@registry = {} # index of project stores
 		@root = document.querySelector(".board")
 		rivets.bind(@root, @)
 
-	# `tasksByProject` is an object of the form `{ project: { title: item } }`
-	init: (tasksByProject) ->
-		for project, tasks of tasksByProject
-			index = {} # tasks by state
-			for title, item of tasks
-				task = new Task(title, item.state, item.category, item.body)
-				index[item.state] ?= []
-				index[item.state].push(task)
+	add: (projectName, tasks, store) ->
+		@registry[projectName] = store
 
-			project = new Project(project, (index[state] for state in @states))
-			@matrix.push(project) # XXX: inefficient WRT Rivets re-rendering?
+		index = {} # tasks by state
+		for title, item of tasks
+			task = new Task(title, item.state, item.category, item.body)
+			index[item.state] ?= []
+			index[item.state].push(task)
+		project = new Project(projectName, (index[state] for state in @states))
+		@matrix.push(project)
 
+		# XXX: use event delegation to move this functionality into constructor
+		#      and to avoid `.is-sortable` hack
 		dragndrop =
 			group: ".tasks"
 			draggable: "li" # XXX: bad selector
@@ -32,8 +33,9 @@ module.exports = class Board
 			onAdd: @onDropAdd
 			# TODO: `onUpdate` for internal ordering
 			onEnd: @onDropEnd
-		for list in @root.querySelectorAll(".tasks") # TODO: use event delegation!?
+		for list in @root.querySelectorAll(".tasks:not(.is-sortable)")
 			new Sortable(list, dragndrop)
+			list.classList.add("is-sortable")
 
 	onTaskDelete: (ev, rv) ->
 		store = rv.registry[rv.project.title]

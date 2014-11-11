@@ -17,7 +17,7 @@ module.exports = class Repository
 				for project in projects
 					store = new Store(@storePath(project), http)
 					notify = do (project) ->
-						return (tasks) -> callback(project, tasks)
+						return (tasks) -> callback(project, tasks, store)
 					store.all().then(notify)
 				return projects)
 
