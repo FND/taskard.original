@@ -1,3 +1,8 @@
+**OBSOLETE**:
+this repo has been superseded by <https://github.com/FND/taskard>
+
+----
+
 Taskard _/ˈtæsɡaɹd/_ - ascended task management for small teams
 
 the name is a silly portmanteau of "task card" - plus the suffix "-ard"
